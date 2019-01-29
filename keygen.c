@@ -93,3 +93,118 @@ void keygen()
 	}
 	printf("\n");
 }
+void encrypt()
+{
+	int i,j,k;
+	srand(time(0));
+	int upper=3;
+	int  lower=1;
+	int alpha = (rand() % (upper - lower + 1)) + lower; 
+	int s = (rand() % (upper - lower + 1)) + lower; 
+	printf("alpha=%d\n",alpha);
+	printf("s=%d\n",s);
+	//putw(alpha, fpt);
+	fprintf(fpt,"%d ",alpha);
+	//putw(s, fpt);
+	fprintf(fpt,"%d ",s);
+	for(i=0;i<n;i++)
+	{
+	I[i][i]=1;
+	}
+	//A'=alpha(A)+s(I)
+	for(i=0;i<n;i++)
+	{
+		for(j=0;j<n;j++)
+		{
+			Ad[i][j] = ( (alpha*arr[i][j])+ (s*I[i][j]) );
+		}
+	}
+
+	for(i=0;i<n;i++)
+	{
+		for(j=0;j<n;j++)
+		{
+			Mt[i][j]=M[j][i];
+		}
+	}
+	for(i=0;i<n;i++)
+	{
+		for(j=0;j<n;j++)
+		{
+			fprintf(fp,"%lf ",Mt[i][j]);
+		}
+	}
+	//Transpose(n);
+	k=1;	
+	for(i=0;i<n;i++)
+	{
+		for(j=0;j<n;j++)
+		{
+			double s1=0.00;
+			if(i==n-1)
+			{
+				if(M[0][i]==1.00){s1=s1+Ad[0][j];}
+				else if(M[0][i]==-1.00){s1=s1-Ad[0][j];}
+				else{printf("This is fuck\n");}
+			}
+			else
+			{
+				if(M[i][k]==1.00){s1=s1+Ad[k][j];}
+				else if(M[i][k]==-1.00){s1=s1-Ad[k][j];}
+				else{printf("This is fuck\n");}
+			}
+			B[i][j]=s1;
+		}
+		k=k+1;
+	}
+	//Transpose(n);
+	//Transposet(n);
+	for(i=0;i<n;i++)
+	{
+		k=1;
+		for(j=0;j<n;j++)
+		{
+			double s2=0.00;
+			if(j!=n-1)
+			{
+				if(Mt[k][j]==1.00){s2=s2+B[i][k];}
+				else if(Mt[k][j]==-1.00){s2=s2-B[i][k];}
+				k=k+1;
+			}
+			else
+			{
+				if(Mt[0][j]==1.00){s2=s2-B[i][0];}
+				else if(Mt[0][j]==-1.00){s2=s2+B[i][0];}
+				//k=k+1;
+			}
+			C[i][j]=s2;
+			//putw(C[i][j],fptr);
+			printf("%lf\t",C[i][j]);
+			fprintf(fptr,"%lf ",C[i][j]);
+		}
+		printf("\n");
+	}
+	//Transposet(n);
+}
+int main()
+{
+	clock_t start, end;
+    	double cpu_time_used;
+    	start = clock();
+	fptr = fopen("matrix", "w");
+	fpt = fopen("keys", "w");
+	fp = fopen("ot_transpose","w");
+	int z=input();
+	if(z!=0)
+	{
+		keygen();
+		encrypt();
+	}
+	fclose(fptr);
+	fclose(fpt);
+	fclose(fp);
+	end = clock();
+      	cpu_time_used = (double) (end - start)/(double)(CLOCKS_PER_SEC);
+      	printf("Running time of code is %lf\n\n",cpu_time_used);
+	return 0;
+}
