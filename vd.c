@@ -59,5 +59,5 @@ if(s==0)
 	printf("\n");
 	cpu_time_used = (double) (end - start)/(double)(CLOCKS_PER_SEC);
       	printf("Running time of code is %lf\n\n",cpu_time_used);
-	return 0;
+	return 0;//verification completed
 }
